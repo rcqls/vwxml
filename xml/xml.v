@@ -1,33 +1,33 @@
 module xml
 
 struct Attribute {
-	pub mut:
-		name string
-		value string
+pub mut:
+	name  string
+	value string
 }
 
 struct ParserState {
-	mut:
-		in_head_tag bool
-		in_attribute_key bool
-		in_attribute_val bool
-		attr_key string
-		attr_val string
-		in_string bool
-		head_tag_str string
-		tag_text string
-		in_comment bool
-		word string
-		tag_attributes []Attribute
+mut:
+	in_head_tag      bool
+	in_attribute_key bool
+	in_attribute_val bool
+	attr_key         string
+	attr_val         string
+	in_string        bool
+	head_tag_str     string
+	tag_text         string
+	in_comment       bool
+	word             string
+	tag_attributes   []Attribute
 }
 
 struct Node {
-	pub mut:
-		attributes []Attribute
-		name string
-		text string
-		childrens []Node
-		parent &Node
+pub mut:
+	attributes []Attribute
+	name       string
+	text       string
+	childrens  []Node
+	parent     &Node
 }
 
 fn can_be_included(ch byte) bool {
@@ -35,11 +35,8 @@ fn can_be_included(ch byte) bool {
 }
 
 fn unescape_string(str string) string {
-	return str.replace('&lt;', '<')
-	          .replace('&gt;', '>')
-	          .replace('&amp;', '&')
-	          .replace('&apos;', "'")
-	          .replace('&quot;', '"')
+	return str.replace('&lt;', '<').replace('&gt;', '>').replace('&amp;', '&').replace('&apos;',
+		"'").replace('&quot;', '"')
 }
 
 pub fn (mut state ParserState) push_attribute() {
@@ -47,15 +44,19 @@ pub fn (mut state ParserState) push_attribute() {
 }
 
 pub fn (attr Attribute) str() string {
-	return "Attribute{name=" + attr.name + ", value=" + attr.value + "}"
+	return 'Attribute{name=' + attr.name + ', value=' + attr.value + '}'
 }
 
 pub fn (node Node) str() string {
-	return "Node{name=" + node.name + ", text=" + node.text + ", childrens=" + node.childrens.str() + ", attributes=" + node.attributes.str() + "}"
+	return 'Node{name=' + node.name + ', text=' + node.text + ', childrens=' +
+		node.childrens.str() + ', attributes=' + node.attributes.str() + '}'
 }
 
 pub fn parse(xml string) Node {
-	mut root := Node{name: '_root_', parent: &Node(0)}
+	mut root := Node{
+		name: '_root_'
+		parent: &Node(0)
+	}
 	chars := xml.bytes()
 
 	mut state := ParserState{} // initialize with default parameters
@@ -103,7 +104,11 @@ pub fn parse(xml string) Node {
 						}
 						state.attr_key = ''
 						state.attr_val = ''
-						curr_node = &Node{attributes:state.tag_attributes, name: state.head_tag_str, parent: curr_node}
+						curr_node = &Node{
+							attributes: state.tag_attributes
+							name: state.head_tag_str
+							parent: curr_node
+						}
 						state.tag_attributes = []
 					}
 				} else {
