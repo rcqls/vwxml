@@ -1,4 +1,4 @@
-import xml
+import rcqls.vwxml.xml
 
 fn main() {
 	node := xml.parse('<thing abc="test"><test>Hello</test><test uid="123">World</test></thing>')

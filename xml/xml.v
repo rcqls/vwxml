@@ -61,7 +61,7 @@ pub fn parse(xml string) Node {
 	mut state := ParserState{} // initialize with default parameters
 	mut curr_node := &root
 	for ch in chars {
-		state.word = state.word + ch.str()
+		state.word = state.word + ch.ascii_str()
 		if ch == ` ` {
 			state.word = ''
 		}
@@ -121,18 +121,18 @@ pub fn parse(xml string) Node {
 								state.in_attribute_key = false
 								state.in_attribute_val = true
 							} else {
-								state.attr_key = state.attr_key + ch.str()
+								state.attr_key = state.attr_key + ch.ascii_str()
 							}
 						} else if state.in_attribute_val {
 							if ch == `"` || ch == `'` { // TODO: not allow to open with " and finish with '
 								state.in_string = !state.in_string
 							} else if state.in_string {
-								state.attr_val = state.attr_val + ch.str()
+								state.attr_val = state.attr_val + ch.ascii_str()
 							}
 						}
 					} else {
 						if can_be_included(ch) {
-							state.head_tag_str = state.head_tag_str + ch.str()
+							state.head_tag_str = state.head_tag_str + ch.ascii_str()
 						}
 					}
 				}
@@ -142,7 +142,7 @@ pub fn parse(xml string) Node {
 					state.head_tag_str = ''
 				} else {
 					if can_be_included(ch) {
-						state.tag_text = state.tag_text + ch.str()
+						state.tag_text = state.tag_text + ch.ascii_str()
 					}
 				}
 			}

@@ -1,4 +1,5 @@
-import xml
+
+module xml
 import os
 
 fn test_static_xml() {
